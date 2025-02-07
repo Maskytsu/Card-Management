@@ -1,16 +1,9 @@
+using NaughtyAttributes;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayersHand : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //this contains instantied card game objects
+    [ReadOnly] public List<Card> CardsInHand = new();
 }

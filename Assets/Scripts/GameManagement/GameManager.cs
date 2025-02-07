@@ -1,5 +1,8 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,10 +10,13 @@ public class GameManager : MonoBehaviour
 
     public static int DeckSize { get; private set; } = 25;
     public static int HandSize { get; private set; } = 5;
-    public static Deck ChoosenDeck { get; private set; }
 
     public event Action OnTurnEnd;
     public event Action OnGameEnd;
+
+    public Deck ChoosenDeck { get; private set; }
+
+    [SerializeField] private InputSystemUIInputModule _inputSystemForUI;
 
     private void Awake()
     {
@@ -27,15 +33,18 @@ public class GameManager : MonoBehaviour
         ChoosenDeck = deck;
     }
 
+    public void SetInputEnabled(bool value)
+    {
+        _inputSystemForUI.enabled = value;
+    }
+
     public void EndTurn()
     {
-        Debug.Log("Turn ended.");
         OnTurnEnd?.Invoke();
     }
 
     public void EndGame()
     {
-        Debug.Log("Game ended.");
         OnGameEnd?.Invoke();
     }
 

@@ -1,16 +1,31 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Board : MonoBehaviour
+public class Board : MonoBehaviour, IDropHandler
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private RectTransform _boardTransform;
+
+    public void OnDrop(PointerEventData eventData)
     {
-        
+        if (eventData.pointerDrag != null && eventData.pointerDrag.GetComponent<Card>() != null)
+        {
+            Card droppedCard = eventData.pointerDrag.GetComponent<Card>();
+            droppedCard.CardTransform.position = _boardTransform.position;
+
+            StartCoroutine(DiscardCard(droppedCard));
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator DiscardCard(Card card)
     {
-        
+        GameManager.Instance.SetInputEnabled(false);
+
+        yield return new WaitForSeconds(0.75f);
+        GameView.Instance.PlayersHand.CardsInHand.Remove(card);
+        card.gameObject.SetActive(false);
+        GameView.Instance.DiscardPile.AddCardToPile(card);
+
+        GameManager.Instance.SetInputEnabled(true);
     }
 }

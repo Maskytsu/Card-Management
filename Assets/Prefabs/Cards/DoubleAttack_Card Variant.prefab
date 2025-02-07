@@ -112,6 +112,11 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 5471634767033810058}
   m_SourcePrefab: {fileID: 100100000, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+--- !u!224 &2184084297552188099 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+  m_PrefabInstance: {fileID: 2727550745708921354}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8677057966427206127 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6751228773880361957, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
@@ -129,3 +134,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4afb6ca0540d794a9cd13bfa0d49a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainCanvas: {fileID: 0}
+  _cardTransform: {fileID: 2184084297552188099}

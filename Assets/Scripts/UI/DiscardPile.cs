@@ -1,16 +1,18 @@
+using NaughtyAttributes;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DiscardPile : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI _countDisplayTMP;
 
-    // Update is called once per frame
-    void Update()
+    //this contains instantied card game objects (disabled)
+    [ReadOnly, SerializeField] private List<Card> _cardsInPile = new();
+
+    public void AddCardToPile(Card card)
     {
-        
+        _cardsInPile.Add(card);
+        _countDisplayTMP.text = _cardsInPile.Count.ToString();
     }
 }

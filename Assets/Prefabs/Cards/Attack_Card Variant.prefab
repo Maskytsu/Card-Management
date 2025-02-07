@@ -129,3 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a489cc53bac5af4fb0ef1c58b5ce967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainCanvas: {fileID: 0}
+  _cardTransform: {fileID: 7987986991555134045}
+--- !u!224 &7987986991555134045 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+  m_PrefabInstance: {fileID: 6146954117997367956}
+  m_PrefabAsset: {fileID: 0}
