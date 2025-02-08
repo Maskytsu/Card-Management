@@ -1,8 +1,5 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,8 +12,6 @@ public class GameManager : MonoBehaviour
     public event Action OnGameEnd;
 
     public Deck ChoosenDeck { get; private set; }
-
-    [SerializeField] private InputSystemUIInputModule _inputSystemForUI;
 
     private void Awake()
     {

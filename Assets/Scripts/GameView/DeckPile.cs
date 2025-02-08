@@ -1,7 +1,5 @@
-using DG.Tweening;
 using NaughtyAttributes;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -24,6 +22,11 @@ public class DeckPile : MonoBehaviour
         SendCardsToHand();
     }
 
+    public void MinusOneFromDisplayedNumer()
+    {
+        _countDisplayTMP.text = (Int32.Parse(_countDisplayTMP.text) - 1).ToString();
+    }
+
     private void SetupDeck()
     {
         _cardsInPile = GameManager.Instance.ChoosenDeck.Cards.ToList();
@@ -38,17 +41,9 @@ public class DeckPile : MonoBehaviour
         _countDisplayTMP.text = _cardsInPile.Count.ToString();
     }
 
-    public void MinusOneFromDisplayedNumer()
+    private void SendCardsToHand()
     {
-        _countDisplayTMP.text = (Int32.Parse(_countDisplayTMP.text) - 1).ToString();
-    }
-
-    public void SendCardsToHand()
-    {
-        if (_cardsInPile.Count == 0)
-        {
-             return;
-        }
+        if (_cardsInPile.Count == 0) return;
 
         List<Card> cardsToSend = new();
         int amountOfCardsToFillHand = GameManager.HandSize - GameView.Instance.PlayersHand.AmountOfCardsInHand;

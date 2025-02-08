@@ -58,13 +58,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d76322e9a513db42bbd5e59a639f9f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MainCanvas>k__BackingField: {fileID: 2750058485890452756}
+  <EndTurnOrGameButton>k__BackingField: {fileID: 249008877448062779}
+  <Board>k__BackingField: {fileID: 8920831707247801147}
   <DeckPile>k__BackingField: {fileID: 1900189230437563986}
   <PlayersHand>k__BackingField: {fileID: 5717694859079642822}
   <DiscardPile>k__BackingField: {fileID: 7321409062754060405}
-  <Board>k__BackingField: {fileID: 8920831707247801147}
-  <EndTurnOrGameButton>k__BackingField: {fileID: 249008877448062779}
-  <MainCanvas>k__BackingField: {fileID: 2750058485890452756}
-  GameEndedPanel: {fileID: 7803570385256652435}
+  <GameEndedPanel>k__BackingField: {fileID: 7803570385256652435}
 --- !u!223 &2750058485890452756
 Canvas:
   m_ObjectHideFlags: 0
@@ -400,8 +400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9b5757946922445b984593ab3e18b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <CardSlots>k__BackingField: []
-  CardsInHand: []
+  _cardsInHand: []
+  _cardSlots: []
   _cardSlotsParent: {fileID: 1270689794054097956}
 --- !u!222 &3480491227831916302
 CanvasRenderer:
@@ -945,8 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 347fbf8103b5fa4408cf51c6b65decb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countDisplayTMP: {fileID: 1768668438721354420}
   _cardsInPile: []
+  _countDisplayTMP: {fileID: 1768668438721354420}
 --- !u!222 &8386626434403141124
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1421,7 +1421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4c411a46fdf8b45820f377204ac9f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardsInPile: []
+  _cardsInPile: []
   _cardsParent: {fileID: 6761509521780223140}
   _countDisplayTMP: {fileID: 4307038065632291963}
 --- !u!222 &7942496576211632575
@@ -1509,6 +1509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f370afe9d85f8b040bffa1841e36aa56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardOnBoard: {fileID: 0}
 --- !u!222 &2676757854998594774
 CanvasRenderer:
   m_ObjectHideFlags: 0

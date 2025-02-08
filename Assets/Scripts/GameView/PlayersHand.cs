@@ -15,11 +15,12 @@ public class PlayersHand : MonoBehaviour
     [ReadOnly, SerializeField] private List<Card> _cardsInHand = new();
 
     [ReadOnly, SerializeField] private List<CardSlot> _cardSlots;
+
     [SerializeField] private Transform _cardSlotsParent;
 
     private readonly float _baseSlotsDistance = 150f;
     private readonly int _amountOfSlotsToShrinkDistance = 7;
-    private readonly float _shrinkAmount = 10f;
+    private readonly float _shrinkAmount = 7.5f;
     private readonly float _minSlotsDistance = 20f;
 
     public void RemoveCardFromHand(Card card)
@@ -92,7 +93,7 @@ public class PlayersHand : MonoBehaviour
         for (int i = 0; i < numberOfSlots; i++)
         {
             GameObject newSlotGameObject = new("Slot " + i);
-            newSlotGameObject.transform.parent = _cardSlotsParent;
+            newSlotGameObject.transform.SetParent(_cardSlotsParent);
             newSlotGameObject.transform.localPosition = startingSlotPos + (i * distanceBetweenSlots);
             CardSlot newSlot = new(newSlotGameObject.transform);
             generatedSlots.Add(newSlot);
@@ -102,7 +103,6 @@ public class PlayersHand : MonoBehaviour
         _cardSlots = generatedSlots;
 
         AssignCardsToSlots();
-
 
         foreach (CardSlot cardSlot in previousCardSlots)
         {
@@ -127,7 +127,10 @@ public class PlayersHand : MonoBehaviour
             int excessOfHandSize = (numberOfSlots - _amountOfSlotsToShrinkDistance);
             distanceBetweenSlots -= _shrinkAmount * excessOfHandSize * Vector3.right;
 
-            if (distanceBetweenSlots.x < _minSlotsDistance) distanceBetweenSlots.x = _minSlotsDistance;
+            if (distanceBetweenSlots.x < _minSlotsDistance)
+            {
+                distanceBetweenSlots.x = _minSlotsDistance;
+            }
         }
 
         return distanceBetweenSlots;
