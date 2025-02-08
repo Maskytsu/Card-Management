@@ -5,11 +5,11 @@ public class ShieldUpCard : Card
 {
     public override void CardPlayAnimation()
     {
-        Vector3 cardBaseScale = CardTransform.localScale;
+        Vector3 cardBaseScale = transform.localScale;
 
         Sequence animationSeq = DOTween.Sequence();
-        animationSeq.Append(CardTransform.DOScale(cardBaseScale * 1.5f, 0.5f));
-        animationSeq.Append(CardTransform.DOScale(cardBaseScale, 0.5f));
+        animationSeq.Append(transform.DOScale(cardBaseScale * 1.5f, 0.5f));
+        animationSeq.Append(transform.DOScale(cardBaseScale, 0.5f));
 
         animationSeq.onComplete += () =>
         {

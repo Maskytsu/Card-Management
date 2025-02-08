@@ -9,41 +9,45 @@ public class PlayersHand : MonoBehaviour
 {
     public event Action OnCardsDrawn;
 
+    public int AmountOfCardsInHand => _cardsInHand.Count;
+
     //this contains instantiated card game objects
-    [ReadOnly] public List<Card> CardsInHand = new();
+    [ReadOnly, SerializeField] private List<Card> _cardsInHand = new();
 
-    [SerializeField] private Transform _cardSlotsParent;
     [ReadOnly, SerializeField] private List<CardSlot> _cardSlots;
+    [SerializeField] private Transform _cardSlotsParent;
 
-    private float _baseSlotsDistance = 150f;
-    private int _amountOfSlotsToShrinkDistance = 7;
-    private float _shrinkAmount = 10f;
-    private float _minSlotsDistance = 20f;
+    private readonly float _baseSlotsDistance = 150f;
+    private readonly int _amountOfSlotsToShrinkDistance = 7;
+    private readonly float _shrinkAmount = 10f;
+    private readonly float _minSlotsDistance = 20f;
 
-    private void Awake()
+    public void RemoveCardFromHand(Card card)
     {
-        _cardSlots = GenerateCardSlots(GameManager.HandSize);
+        _cardsInHand.Remove(card);
+
+        GenerateCardSlots(AmountOfCardsInHand);
+        MoveCardsToSlots();
     }
 
     public IEnumerator DrawCards(List<Card> cards)
     {
         WaitForSeconds waitForSeconds = new(0.25f);
-        
-        for (int i = 0; i < cards.Count; i++)
+
+        GenerateCardSlots(AmountOfCardsInHand + cards.Count);
+        MoveCardsToSlots();
+
+        foreach (Card card in cards)
         {
-            Card card = cards[i];
-
-            CardsInHand.Add(card);
-
             card.enabled = false;
+            _cardsInHand.Add(card);
 
-            Transform cardSlot = GameView.Instance.PlayersHand._cardSlots[i].Slot.transform;
-            card.CurrentCardSlot = cardSlot;
+            Transform cardSlot = _cardSlots[_cardsInHand.Count - 1].CardSlotTransform.transform;
             card.transform.SetParent(cardSlot);
 
             Sequence drawingSeq = DOTween.Sequence();
-            drawingSeq.Append(card.CardTransform.DOScale(1f, 1f));
-            drawingSeq.Join(card.CardTransform.DOLocalMove(Vector3.zero, 1f));
+            drawingSeq.Append(card.transform.DOScale(1f, 1f));
+            drawingSeq.Join(card.transform.DOLocalMove(Vector3.zero, 1f));
 
             drawingSeq.onComplete += () => { card.enabled = true; };
 
@@ -55,9 +59,20 @@ public class PlayersHand : MonoBehaviour
         OnCardsDrawn?.Invoke();
     }
 
-    private List<CardSlot> GenerateCardSlots(int numberOfSlots)
+    private void MoveCardsToSlots()
     {
-        if (numberOfSlots == 0) return null;
+        foreach (Card card in _cardsInHand)
+        {
+            if (!card.IsBeingDragged)
+            {
+                card.transform.DOLocalMove(Vector3.zero, 0.25f);
+            }
+        }
+    }
+
+    private void GenerateCardSlots(int numberOfSlots)
+    {
+        if (numberOfSlots == 0) return;
 
         Vector3 distanceBetweenSlots = CalculateSlotsDistance(numberOfSlots);
 
@@ -66,7 +81,7 @@ public class PlayersHand : MonoBehaviour
 
         if (numberOfSlots % 2 == 0)
         {
-            Vector3 centerLeftPos = transform.localPosition - (distanceBetweenSlots / 2);
+            Vector3 centerLeftPos = - (distanceBetweenSlots / 2);
             startingSlotPos = centerLeftPos - (((numberOfSlots / 2) - 1) * distanceBetweenSlots);
         }
         else
@@ -79,11 +94,29 @@ public class PlayersHand : MonoBehaviour
             GameObject newSlotGameObject = new("Slot " + i);
             newSlotGameObject.transform.parent = _cardSlotsParent;
             newSlotGameObject.transform.localPosition = startingSlotPos + (i * distanceBetweenSlots);
-            CardSlot newSlot = new(newSlotGameObject);
+            CardSlot newSlot = new(newSlotGameObject.transform);
             generatedSlots.Add(newSlot);
         }
 
-        return generatedSlots;
+        List<CardSlot> previousCardSlots = _cardSlots;
+        _cardSlots = generatedSlots;
+
+        AssignCardsToSlots();
+
+
+        foreach (CardSlot cardSlot in previousCardSlots)
+        {
+            Destroy(cardSlot.CardSlotTransform.gameObject);
+        }
+    }
+
+    private void AssignCardsToSlots()
+    {
+        for (int i = 0; i < _cardsInHand.Count; i++)
+        {
+            _cardSlots[i].CardInSlot = _cardsInHand[i];
+            _cardsInHand[i].transform.SetParent(_cardSlots[i].CardSlotTransform);
+        }
     }
 
     private Vector3 CalculateSlotsDistance(int numberOfSlots)
@@ -92,23 +125,23 @@ public class PlayersHand : MonoBehaviour
         if (numberOfSlots > _amountOfSlotsToShrinkDistance)
         {
             int excessOfHandSize = (numberOfSlots - _amountOfSlotsToShrinkDistance);
-            distanceBetweenSlots -= excessOfHandSize * Vector3.right * _shrinkAmount;
+            distanceBetweenSlots -= _shrinkAmount * excessOfHandSize * Vector3.right;
 
             if (distanceBetweenSlots.x < _minSlotsDistance) distanceBetweenSlots.x = _minSlotsDistance;
         }
 
         return distanceBetweenSlots;
     }
-}
 
-[Serializable]
-public class CardSlot
-{
-    public GameObject Slot;
-    public Card CardInSlot;
-
-    public CardSlot(GameObject slot)
+    [Serializable]
+    private class CardSlot
     {
-        Slot = slot;
+        public Transform CardSlotTransform;
+        public Card CardInSlot;
+
+        public CardSlot(Transform cardSlotTransform)
+        {
+            CardSlotTransform = cardSlotTransform;
+        }
     }
 }

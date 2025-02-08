@@ -9,8 +9,8 @@ public class AttackCard : Card
         float slashSpeed = 0.1f;
 
         Sequence animationSeq = DOTween.Sequence();
-        animationSeq.Append(CardTransform.DOLocalMove(leftUpPos, slashSpeed).SetEase(Ease.Linear));
-        animationSeq.Append(CardTransform.DOLocalMove(-leftUpPos, slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transform.DOLocalMove(leftUpPos, slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transform.DOLocalMove(-leftUpPos, slashSpeed).SetEase(Ease.Linear));
 
         animationSeq.onComplete += () =>
         {

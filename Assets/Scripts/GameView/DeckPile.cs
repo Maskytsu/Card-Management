@@ -51,7 +51,7 @@ public class DeckPile : MonoBehaviour
         }
 
         List<Card> cardsToSend = new();
-        int amountOfCardsToFillHand = GameManager.HandSize - GameView.Instance.PlayersHand.CardsInHand.Count;
+        int amountOfCardsToFillHand = GameManager.HandSize - GameView.Instance.PlayersHand.AmountOfCardsInHand;
 
         for (int i = 0; i < amountOfCardsToFillHand; i++)
         {

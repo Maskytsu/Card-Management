@@ -1,16 +1,16 @@
 using DG.Tweening;
-using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Board : MonoBehaviour, IDropHandler
 {
-    private bool _cardOnBoard = false;
+    [ReadOnly, SerializeField] private Card _cardOnBoard;
 
     //it is called befor OnEndDrag on Card object
     public void OnDrop(PointerEventData eventData)
     {
-        if (_cardOnBoard) return;
+        if (_cardOnBoard != null) return;
 
         if (eventData.pointerDrag != null && eventData.pointerDrag.GetComponent<Card>() != null)
         {
@@ -21,14 +21,12 @@ public class Board : MonoBehaviour, IDropHandler
 
     private void PlayCard(Card card)
     {
-        _cardOnBoard = true;
-
+        _cardOnBoard = card;
         card.enabled = false;
 
-        GameView.Instance.PlayersHand.CardsInHand.Remove(card);
-        GameView.Instance.DiscardPile.AddCardToPile(card);
+        card.transform.SetParent(transform);
+        GameView.Instance.PlayersHand.RemoveCardFromHand(card);
 
-        card.CardTransform.SetParent(transform);
         Tween moveTween = card.transform.DOLocalMove(Vector3.zero, 0.25f);
         moveTween.onComplete += card.CardPlayAnimation;
 
@@ -37,14 +35,14 @@ public class Board : MonoBehaviour, IDropHandler
 
     private void DiscardCard(Card card)
     {
-        _cardOnBoard = false;
+        _cardOnBoard = null;
 
-
+        GameView.Instance.DiscardPile.AddCardToPile(card);
         GameView.Instance.DiscardPile.SetCardParent(card);
 
         Sequence discardingSeq = DOTween.Sequence();
-        discardingSeq.Append(card.CardTransform.DOScale(0f, 1f));
-        discardingSeq.Join(card.CardTransform.DOMove(GameView.Instance.DiscardPile.transform.position, 1f));
+        discardingSeq.Append(card.transform.DOScale(0f, 1f));
+        discardingSeq.Join(card.transform.DOMove(GameView.Instance.DiscardPile.transform.position, 1f));
 
         discardingSeq.onComplete += () =>
         {

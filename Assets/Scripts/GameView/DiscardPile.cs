@@ -19,7 +19,7 @@ public class DiscardPile : MonoBehaviour
 
     public void SetCardParent(Card card)
     {
-        card.CardTransform.SetParent(_cardsParent);
+        card.transform.SetParent(_cardsParent);
     }
 
     public void AddOneToDisplayedNumer()

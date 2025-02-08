@@ -1,48 +1,49 @@
 using DG.Tweening;
-using NaughtyAttributes;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public abstract class Card : MonoBehaviour, 
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public RectTransform CardTransform { get; private set; }
-    public CanvasGroup CardCanvasGroup { get; private set; }
-
-    [ReadOnly] public Transform CurrentCardSlot;
-
     public Action OnPlayAnimationEnd;
+
+    public bool IsBeingDragged { get; private set; } = false;
+
+    private RectTransform _cardRectTransform;
+    private CanvasGroup _cardCanvasGroup;
 
     private Sequence _highlightCardSeq;
     private Tween _moveToSlotTween;
 
     private void Awake()
     {
-        CardTransform = GetComponent<RectTransform>();
-        CardCanvasGroup = GetComponent<CanvasGroup>();
+        _cardRectTransform = GetComponent<RectTransform>();
+        _cardCanvasGroup = GetComponent<CanvasGroup>();
     }
 
     public abstract void CardPlayAnimation();
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        IsBeingDragged = true;
+        _cardCanvasGroup.blocksRaycasts = false;
+
         if (_moveToSlotTween.IsActive()) _moveToSlotTween.Kill();
-        CardCanvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        CardTransform.anchoredPosition += eventData.delta / GameView.Instance.MainCanvas.scaleFactor;
+        _cardRectTransform.anchoredPosition += eventData.delta / GameView.Instance.MainCanvas.scaleFactor;
     }
 
     //it is called after OnDrop on Board object
     public void OnEndDrag(PointerEventData eventData)
     {
-        CardCanvasGroup.blocksRaycasts = true;
-        _moveToSlotTween = CardTransform.DOMove(CurrentCardSlot.position, 1f);
+        IsBeingDragged = false;
+        _cardCanvasGroup.blocksRaycasts = true;
+
+        _moveToSlotTween = transform.DOLocalMove(Vector3.zero, 1f);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -65,6 +66,6 @@ public abstract class Card : MonoBehaviour,
         if (_highlightCardSeq.IsActive()) _highlightCardSeq.Kill();
 
         _highlightCardSeq = DOTween.Sequence();
-        _highlightCardSeq.Append(CardTransform.DOScale(scale, 0.25f));
+        _highlightCardSeq.Append(transform.DOScale(scale, 0.25f));
     }
 }
