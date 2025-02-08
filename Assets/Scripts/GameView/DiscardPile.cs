@@ -6,13 +6,23 @@ using UnityEngine;
 
 public class DiscardPile : MonoBehaviour
 {
-    [field: SerializeField] public Transform CardsParent { get; private set; }
     //this contains instantied card game objects (disabled)
-    [ReadOnly, SerializeField] public List<Card> CardsInPile = new();
+    [ReadOnly, SerializeField] private List<Card> _cardsInPile = new();
 
+    [SerializeField] private Transform _cardsParent;
     [SerializeField] private TextMeshProUGUI _countDisplayTMP;
 
-    public void AddOneCardToDisplayedNumer()
+    public void AddCardToPile(Card card)
+    {
+        _cardsInPile.Add(card);
+    }
+
+    public void SetCardParent(Card card)
+    {
+        card.CardTransform.SetParent(_cardsParent);
+    }
+
+    public void AddOneToDisplayedNumer()
     {
         _countDisplayTMP.text = (Int32.Parse(_countDisplayTMP.text) + 1).ToString();
     }

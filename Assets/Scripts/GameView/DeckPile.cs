@@ -9,22 +9,19 @@ using UnityEngine;
 
 public class DeckPile : MonoBehaviour
 {
-    public event Action OnCardsDrawn;
     public int AmountOfCardsInPile => _cardsInPile.Count;
-
-    [SerializeField] private TextMeshProUGUI _countDisplayTMP;
 
     //this contains card prefabs
     [ReadOnly, SerializeField] private List<Card> _cardsInPile;
 
-    private PlayersHand PlayersHand => GameView.Instance.PlayersHand;
+    [SerializeField] private TextMeshProUGUI _countDisplayTMP;
 
     private void Start()
     {
-        GameManager.Instance.OnTurnEnd += () => StartCoroutine(DrawCardsToHand());
+        GameManager.Instance.OnTurnEnd += SendCardsToHand;
 
         SetupDeck();
-        StartCoroutine(DrawCardsToHand());
+        SendCardsToHand();
     }
 
     private void SetupDeck()
@@ -41,47 +38,34 @@ public class DeckPile : MonoBehaviour
         _countDisplayTMP.text = _cardsInPile.Count.ToString();
     }
 
-    private IEnumerator DrawCardsToHand()
+    public void MinusOneFromDisplayedNumer()
+    {
+        _countDisplayTMP.text = (Int32.Parse(_countDisplayTMP.text) - 1).ToString();
+    }
+
+    public void SendCardsToHand()
     {
         if (_cardsInPile.Count == 0)
         {
-            yield break;
+             return;
         }
 
-        int amountOfCardsToFillHand = GameManager.HandSize - PlayersHand.CardsInHand.Count;
-        WaitForSeconds waitForSeconds = new(0.25f);
+        List<Card> cardsToSend = new();
+        int amountOfCardsToFillHand = GameManager.HandSize - GameView.Instance.PlayersHand.CardsInHand.Count;
 
         for (int i = 0; i < amountOfCardsToFillHand; i++)
         {
             int lastIndexOfPile = _cardsInPile.Count - 1;
-            Card drawnCard = Instantiate(_cardsInPile[lastIndexOfPile], PlayersHand.CardsParent);
+            Card spawnedCard = Instantiate(_cardsInPile[lastIndexOfPile]);
+            spawnedCard.transform.position = transform.position;
+            spawnedCard.transform.localScale = Vector3.zero;
+            cardsToSend.Add(spawnedCard);
 
             _cardsInPile.RemoveAt(lastIndexOfPile);
-            _countDisplayTMP.text = _cardsInPile.Count.ToString();
-            PlayersHand.CardsInHand.Add(drawnCard);
-
-            drawnCard.CardTransform.position = transform.position;
-            drawnCard.CardTransform.localScale = Vector3.zero;
-            drawnCard.enabled = false;
-
-            Transform cardSlot = GameView.Instance.PlayersHand.CardSlots[i];
-            drawnCard.CurrentCardSlot = cardSlot;
-
-            Sequence drawingSeq = DOTween.Sequence();
-            drawingSeq.Append(drawnCard.CardTransform.DOScale(1f, 1f));
-            drawingSeq.Join(drawnCard.CardTransform.DOMove(cardSlot.position, 1f));
-
-            drawingSeq.onComplete += () =>
-            {
-                drawnCard.enabled = true;
-            };
-
 
             if (_cardsInPile.Count == 0) break;
-
-            yield return waitForSeconds;
         }
 
-        OnCardsDrawn?.Invoke();
+        StartCoroutine(GameView.Instance.PlayersHand.DrawCards(cardsToSend));
     }
 }

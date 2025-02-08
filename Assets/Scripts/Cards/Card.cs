@@ -16,8 +16,6 @@ public abstract class Card : MonoBehaviour,
 
     public Action OnPlayAnimationEnd;
 
-    private Canvas MainCanvas => GameView.Instance.MainCanvas;
-
     private Sequence _highlightCardSeq;
     private Tween _moveToSlotTween;
 
@@ -37,7 +35,7 @@ public abstract class Card : MonoBehaviour,
 
     public void OnDrag(PointerEventData eventData)
     {
-        CardTransform.anchoredPosition += eventData.delta / MainCanvas.scaleFactor;
+        CardTransform.anchoredPosition += eventData.delta / GameView.Instance.MainCanvas.scaleFactor;
     }
 
     //it is called after OnDrop on Board object

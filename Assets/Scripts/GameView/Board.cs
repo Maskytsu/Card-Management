@@ -26,7 +26,7 @@ public class Board : MonoBehaviour, IDropHandler
         card.enabled = false;
 
         GameView.Instance.PlayersHand.CardsInHand.Remove(card);
-        GameView.Instance.DiscardPile.CardsInPile.Add(card);
+        GameView.Instance.DiscardPile.AddCardToPile(card);
 
         card.CardTransform.SetParent(transform);
         Tween moveTween = card.transform.DOLocalMove(Vector3.zero, 0.25f);
@@ -39,7 +39,8 @@ public class Board : MonoBehaviour, IDropHandler
     {
         _cardOnBoard = false;
 
-        card.CardTransform.SetParent(GameView.Instance.DiscardPile.CardsParent);
+
+        GameView.Instance.DiscardPile.SetCardParent(card);
 
         Sequence discardingSeq = DOTween.Sequence();
         discardingSeq.Append(card.CardTransform.DOScale(0f, 1f));
@@ -47,7 +48,7 @@ public class Board : MonoBehaviour, IDropHandler
 
         discardingSeq.onComplete += () =>
         {
-            GameView.Instance.DiscardPile.AddOneCardToDisplayedNumer();
+            GameView.Instance.DiscardPile.AddOneToDisplayedNumer();
             card.gameObject.SetActive(false);
         };
     }

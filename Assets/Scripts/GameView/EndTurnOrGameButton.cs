@@ -9,7 +9,7 @@ public class EndTurnOrGameButton : MonoBehaviour
 
     private void Start()
     {
-        DeckPile.OnCardsDrawn += SwapNameIfLastTurn;
+        GameView.Instance.PlayersHand.OnCardsDrawn += SwapNameIfLastTurn;
     }
 
     private void SwapNameIfLastTurn()
