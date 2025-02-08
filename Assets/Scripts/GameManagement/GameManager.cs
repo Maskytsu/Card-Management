@@ -33,10 +33,12 @@ public class GameManager : MonoBehaviour
         ChoosenDeck = deck;
     }
 
+    /*
     public void SetInputEnabled(bool value)
     {
         _inputSystemForUI.enabled = value;
     }
+    */
 
     public void EndTurn()
     {

@@ -92,6 +92,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_EffectColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_EffectColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_EffectColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_EffectColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_UseGraphicAlpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_EffectDistance.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545637605209528850, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_EffectDistance.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5998776936527373117, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -129,10 +157,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d291d1389f1d854793891963e36e1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvas: {fileID: 0}
-  _cardTransform: {fileID: 5749485917678532436}
---- !u!224 &5749485917678532436 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
-  m_PrefabInstance: {fileID: 8385455191605421981}
-  m_PrefabAsset: {fileID: 0}
+  CurrentCardSlot: {fileID: 0}
