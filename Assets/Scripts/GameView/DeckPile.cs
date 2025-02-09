@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class DeckPile : MonoBehaviour
 {
+    public event Action OnCardsSent;
+
     public int AmountOfCardsInPile => _cardsInPile.Count;
 
     //this contains card prefabs
@@ -57,15 +59,20 @@ public class DeckPile : MonoBehaviour
         for (int i = 0; i < amountOfCardsToFillHand; i++)
         {
             int lastIndexOfPile = _cardsInPile.Count - 1;
+
             Card spawnedCard = Instantiate(_cardsInPile[lastIndexOfPile]);
+
+            spawnedCard.enabled = false;
             spawnedCard.transform.position = transform.position;
             spawnedCard.transform.localScale = Vector3.zero;
-            cardsToSend.Add(spawnedCard);
 
+            cardsToSend.Add(spawnedCard);
             _cardsInPile.RemoveAt(lastIndexOfPile);
 
             if (_cardsInPile.Count == 0) break;
         }
+
+        OnCardsSent?.Invoke();
 
         StartCoroutine(GameView.Instance.PlayersHand.DrawCards(cardsToSend));
     }

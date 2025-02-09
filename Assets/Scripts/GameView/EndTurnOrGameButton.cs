@@ -5,14 +5,14 @@ public class EndTurnOrGameButton : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _buttonTMP;
 
-    private string _endGameText = "End\nGame";
+    private readonly string _endGameText = "End\nGame";
 
     private DeckPile DeckPile => GameView.Instance.DeckPile;
     private PlayersHand PlayersHand => GameView.Instance.PlayersHand;
 
     private void Start()
     {
-        PlayersHand.OnCardsDrawn += SwapNameIfLastTurn;
+        DeckPile.OnCardsSent += SwapNameIfLastTurn;
     }
 
     private void SwapNameIfLastTurn()

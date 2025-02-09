@@ -22,17 +22,20 @@ public class Board : MonoBehaviour, IDropHandler
     private void PlayCard(Card card)
     {
         //this is preventing card from being dragged
-        //it also makes that the OnEndDrag event is not called on card
+        //it also makes that OnEndDrag and OnPointerExit events is not called on the card
         card.enabled = false;
+
+        //these two lines fixes potential buggs caused by not calling OnEndDrag event on the card
+        GameManager.Instance.SetCursorToBasic();
+        card.SetIsBeingDragged(false);
+
+        GameView.Instance.PlayersHand.RemoveCardFromHand(card);
 
         _cardOnBoard = card;
         card.transform.SetParent(transform);
 
-        GameManager.Instance.SetCursorToBasic();
-        GameView.Instance.PlayersHand.RemoveCardFromHand(card);
-
-        Tween moveTween = card.transform.DOLocalMove(Vector3.zero, 0.25f);
-        moveTween.onComplete += card.CardPlayAnimation;
+        Tween moveCardToBoardTween = card.transform.DOLocalMove(Vector3.zero, 0.25f);
+        moveCardToBoardTween.onComplete += card.PlayCard;
 
         card.OnPlayAnimationEnd += () => DiscardCard(card);
     }

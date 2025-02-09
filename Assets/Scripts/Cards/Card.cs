@@ -1,24 +1,25 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public abstract class Card : MonoBehaviour, 
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public Action OnPlayAnimationEnd;
+    public static readonly string MoveCardTweensID = "MoveCardTween";
+
+    public event Action OnPlayAnimationEnd;
 
     public bool IsBeingDragged { get; private set; } = false;
-
-    public static readonly string MoveTweenID = "move";
 
     private RectTransform _cardRectTransform;
     private CanvasGroup _cardCanvasGroup;
     private Outline _cardOutline;
 
     private Sequence _highlightCardSeq;
-    private Tween _moveToSlotTween;
 
     private void Awake()
     {
@@ -27,19 +28,23 @@ public abstract class Card : MonoBehaviour,
         _cardOutline = transform.GetComponentInChildren<Outline>();
     }
 
-    /// <summary>
-    /// It needs to invoke <see cref="OnPlayAnimationEnd"/> on the end of animation.
-    /// </summary>
-    public abstract void CardPlayAnimation();
+    private void OnEnable()
+    {
+        _cardCanvasGroup.blocksRaycasts = true;
+    }
+
+    private void OnDisable()
+    {
+        _cardCanvasGroup.blocksRaycasts = false;
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        GameManager.Instance.SetCursorToHolding();
-
         IsBeingDragged = true;
         _cardCanvasGroup.blocksRaycasts = false;
 
-        if (_moveToSlotTween.IsActive()) _moveToSlotTween.Kill();
+        GameManager.Instance.SetCursorToHolding();
+        DOTween.Kill(transform, MoveCardTweensID);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -50,12 +55,11 @@ public abstract class Card : MonoBehaviour,
     //it is called after OnDrop on Board object
     public void OnEndDrag(PointerEventData eventData)
     {
-        GameManager.Instance.SetCursorToBasic();
-
         IsBeingDragged = false;
         _cardCanvasGroup.blocksRaycasts = true;
 
-        _moveToSlotTween = transform.DOLocalMove(Vector3.zero, 1f).SetId(MoveTweenID);
+        GameManager.Instance.SetCursorToBasic();
+        transform.DOLocalMove(Vector3.zero, 1f).SetId(MoveCardTweensID);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -68,10 +72,23 @@ public abstract class Card : MonoBehaviour,
         if (!eventData.dragging) HighlightCard(1f, 0f);
     }
 
-    protected void EndAnimation()
+    public void SetIsBeingDragged(bool value)
     {
-        OnPlayAnimationEnd?.Invoke();
+        IsBeingDragged = value;
     }
+
+    public void PlayCard()
+    {
+        Sequence animationSeq = DOTween.Sequence();
+        animationSeq.onComplete += () => OnPlayAnimationEnd?.Invoke();
+
+        CardPlayAnimation(animationSeq);
+    }
+
+    /// <summary>
+    /// Animation should be created as part of given Sequence <paramref name="animationSeq"/>.
+    /// </summary>
+    protected abstract void CardPlayAnimation(Sequence animationSeq);
 
     private void HighlightCard(float scale, float fade)
     {
