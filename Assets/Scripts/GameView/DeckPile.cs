@@ -1,9 +1,11 @@
+using DG.Tweening;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeckPile : MonoBehaviour
 {
@@ -19,7 +21,6 @@ public class DeckPile : MonoBehaviour
         GameManager.Instance.OnTurnEnd += SendCardsToHand;
 
         SetupDeck();
-        SendCardsToHand();
     }
 
     public void MinusOneFromDisplayedNumer()
@@ -39,6 +40,12 @@ public class DeckPile : MonoBehaviour
         }
 
         _countDisplayTMP.text = _cardsInPile.Count.ToString();
+
+        Sequence shuffleAnimation = DOTween.Sequence();
+        shuffleAnimation.Append(transform.DOShakePosition(1f, 50f));
+        shuffleAnimation.Append(_countDisplayTMP.DOFade(1f, 0.5f));
+
+        shuffleAnimation.onComplete += SendCardsToHand;
     }
 
     private void SendCardsToHand()
