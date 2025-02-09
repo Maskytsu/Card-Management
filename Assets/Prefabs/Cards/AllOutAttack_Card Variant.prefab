@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllOutAttack_Card Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8311538141809567919, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1991224323112568568, guid: 52514e77c6f451448910bf86f9c3b651, type: 3}
     - target: {fileID: 8922136571771462775, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -129,10 +133,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5885af456711fc4981e9223b0d9eb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvas: {fileID: 0}
-  _cardTransform: {fileID: 8140350103053870284}
---- !u!224 &8140350103053870284 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
-  m_PrefabInstance: {fileID: 5435014213017367557}
-  m_PrefabAsset: {fileID: 0}

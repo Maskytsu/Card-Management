@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 52514e77c6f451448910bf86f9c3b651
+guid: c3c50f773c024b448b23c7816c9023e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1991224323112568568
-    second: Card_5_0
+      213: -4893274886742387279
+    second: Card_0_Empty_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Card_5_AllOutAttack
+      name: Card_0_Empty_0
       rect:
         serializedVersion: 2
         x: 0
@@ -134,15 +134,15 @@ TextureImporter:
         width: 694
         height: 1025
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 809f1c03700cd54e0800000000000000
-      internalID: -1991224323112568568
+      spriteID: 1b5516b8a68971cb0800000000000000
+      internalID: -4893274886742387279
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d66444b16f61e5c47a5550386201145b
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Card_5_AllOutAttack: -1991224323112568568
+      Card_0_Empty_0: -4893274886742387279
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Attack_Card Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8311538141809567919, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5319029520119078399, guid: 8e66d6d5db39d144e8fa9d7cc45e7334, type: 3}
     - target: {fileID: 8922136571771462775, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -129,10 +133,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a489cc53bac5af4fb0ef1c58b5ce967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvas: {fileID: 0}
-  _cardTransform: {fileID: 7987986991555134045}
---- !u!224 &7987986991555134045 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
-  m_PrefabInstance: {fileID: 6146954117997367956}
-  m_PrefabAsset: {fileID: 0}

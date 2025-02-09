@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public abstract class Card : MonoBehaviour, 
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
@@ -10,8 +11,11 @@ public abstract class Card : MonoBehaviour,
 
     public bool IsBeingDragged { get; private set; } = false;
 
+    public static readonly string MoveTweenID = "move";
+
     private RectTransform _cardRectTransform;
     private CanvasGroup _cardCanvasGroup;
+    private Outline _cardOutline;
 
     private Sequence _highlightCardSeq;
     private Tween _moveToSlotTween;
@@ -20,6 +24,7 @@ public abstract class Card : MonoBehaviour,
     {
         _cardRectTransform = GetComponent<RectTransform>();
         _cardCanvasGroup = GetComponent<CanvasGroup>();
+        _cardOutline = transform.GetComponentInChildren<Outline>();
     }
 
     /// <summary>
@@ -29,6 +34,8 @@ public abstract class Card : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        GameManager.Instance.SetCursorToHolding();
+
         IsBeingDragged = true;
         _cardCanvasGroup.blocksRaycasts = false;
 
@@ -43,20 +50,22 @@ public abstract class Card : MonoBehaviour,
     //it is called after OnDrop on Board object
     public void OnEndDrag(PointerEventData eventData)
     {
+        GameManager.Instance.SetCursorToBasic();
+
         IsBeingDragged = false;
         _cardCanvasGroup.blocksRaycasts = true;
 
-        _moveToSlotTween = transform.DOLocalMove(Vector3.zero, 1f);
+        _moveToSlotTween = transform.DOLocalMove(Vector3.zero, 1f).SetId(MoveTweenID);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!eventData.dragging) HighlightCard(1.25f);
+        if (!eventData.dragging) HighlightCard(1.25f, 1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!eventData.dragging) HighlightCard(1f);
+        if (!eventData.dragging) HighlightCard(1f, 0f);
     }
 
     protected void EndAnimation()
@@ -64,11 +73,12 @@ public abstract class Card : MonoBehaviour,
         OnPlayAnimationEnd?.Invoke();
     }
 
-    private void HighlightCard(float scale)
+    private void HighlightCard(float scale, float fade)
     {
         if (_highlightCardSeq.IsActive()) _highlightCardSeq.Kill();
 
         _highlightCardSeq = DOTween.Sequence();
         _highlightCardSeq.Append(transform.DOScale(scale, 0.25f));
+        _highlightCardSeq.Join(_cardOutline.DOFade(fade, 0.15f));
     }
 }

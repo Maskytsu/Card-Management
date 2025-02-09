@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShieldUp_Card Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8311538141809567919, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8906535288332628968, guid: f4c032c28cd56a5428fddfb1eb7de247, type: 3}
     - target: {fileID: 8922136571771462775, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -129,10 +133,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0ca11c64989344cbb70c4fda65dfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvas: {fileID: 0}
-  _cardTransform: {fileID: 8274654110698395619}
---- !u!224 &8274654110698395619 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
-  m_PrefabInstance: {fileID: 5278258319535441706}
-  m_PrefabAsset: {fileID: 0}

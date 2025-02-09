@@ -13,9 +13,13 @@ public class GameManager : MonoBehaviour
 
     public Deck ChoosenDeck { get; private set; }
 
+    [SerializeField] private Texture2D _basicCursorTex;
+    [SerializeField] private Texture2D _holdingCursorTex;
+
     private void Awake()
     {
         CreateInstance();
+        SetCursorToBasic();
     }
 
     private void Start()
@@ -26,6 +30,16 @@ public class GameManager : MonoBehaviour
     public void SetChoosenDeck(Deck deck)
     {
         ChoosenDeck = deck;
+    }
+
+    public void SetCursorToBasic()
+    {
+        Cursor.SetCursor(_basicCursorTex, Vector2.zero, CursorMode.ForceSoftware);
+    }
+
+    public void SetCursorToHolding()
+    {
+        Cursor.SetCursor(_holdingCursorTex, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     public void EndTurn()

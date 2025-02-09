@@ -128,6 +128,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Activate_Card Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8311538141809567919, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1739198746453962294, guid: ba0b09e77f56b3b49b436697b38de824, type: 3}
     - target: {fileID: 8922136571771462775, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -157,4 +161,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d291d1389f1d854793891963e36e1bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentCardSlot: {fileID: 0}

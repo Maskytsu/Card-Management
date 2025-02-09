@@ -15,6 +15,7 @@ public class DiscardPile : MonoBehaviour
     public void AddCardToPile(Card card)
     {
         _cardsInPile.Add(card);
+                card.transform.SetParent(_cardsParent);
     }
 
     public void SetCardParent(Card card)

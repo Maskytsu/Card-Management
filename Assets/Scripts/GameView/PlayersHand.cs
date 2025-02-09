@@ -78,7 +78,7 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
             Sequence drawingSeq = DOTween.Sequence();
             drawingSeq.Append(card.transform.DOScale(1f, 1f));
-            drawingSeq.Join(card.transform.DOLocalMove(Vector3.zero, 1f));
+            drawingSeq.Join(card.transform.DOLocalMove(Vector3.zero, 1f).SetId(Card.MoveTweenID));
 
             drawingSeq.onComplete += () => { card.enabled = true; };
 
@@ -185,7 +185,8 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
     {
         if (!card.IsBeingDragged && card.transform.localPosition != Vector3.zero)
         {
-            card.transform.DOLocalMove(Vector3.zero, 0.25f);
+            DOTween.Kill(card.transform, Card.MoveTweenID);
+            card.transform.DOLocalMove(Vector3.zero, 0.25f).SetId(Card.MoveTweenID);
         }
     }
 

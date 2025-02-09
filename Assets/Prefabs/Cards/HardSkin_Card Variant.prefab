@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HardSkin_Card Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8311538141809567919, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -9149595790079352919, guid: feb7ae1ab81ffad4b8b15da0d72eb547, type: 3}
     - target: {fileID: 8922136571771462775, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -129,10 +133,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c63f310d086f6d49872fa15ea4e90af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCanvas: {fileID: 0}
-  _cardTransform: {fileID: 5113389657120125658}
---- !u!224 &5113389657120125658 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4293436687562723529, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
-  m_PrefabInstance: {fileID: 9035119318542803475}
-  m_PrefabAsset: {fileID: 0}

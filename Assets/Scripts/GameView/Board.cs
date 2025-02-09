@@ -7,7 +7,7 @@ public class Board : MonoBehaviour, IDropHandler
 {
     [ReadOnly, SerializeField] private Card _cardOnBoard;
 
-    //it is called befor OnEndDrag on Card object
+    //it is called before OnEndDrag on Card object
     public void OnDrop(PointerEventData eventData)
     {
         if (_cardOnBoard != null) return;
@@ -21,10 +21,14 @@ public class Board : MonoBehaviour, IDropHandler
 
     private void PlayCard(Card card)
     {
-        _cardOnBoard = card;
+        //this is preventing card from being dragged
+        //it also makes that the OnEndDrag event is not called on card
         card.enabled = false;
 
+        _cardOnBoard = card;
         card.transform.SetParent(transform);
+
+        GameManager.Instance.SetCursorToBasic();
         GameView.Instance.PlayersHand.RemoveCardFromHand(card);
 
         Tween moveTween = card.transform.DOLocalMove(Vector3.zero, 0.25f);
