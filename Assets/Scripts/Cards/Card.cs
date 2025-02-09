@@ -22,6 +22,9 @@ public abstract class Card : MonoBehaviour,
         _cardCanvasGroup = GetComponent<CanvasGroup>();
     }
 
+    /// <summary>
+    /// It needs to invoke <see cref="OnPlayAnimationEnd"/> on the end of animation.
+    /// </summary>
     public abstract void CardPlayAnimation();
 
     public void OnBeginDrag(PointerEventData eventData)
