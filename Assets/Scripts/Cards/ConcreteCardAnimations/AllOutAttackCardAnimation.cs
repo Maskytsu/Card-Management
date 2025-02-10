@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class AllOutAttackCardAnimation : CardAnimation
 {
-    public override void CardPlayAnimation(Sequence animationSeq)
-    {
-        Vector3 leftUpPos = (Vector3.up + Vector3.left) * 200;
-        Vector3 rightUpPos = (Vector3.up + Vector3.right) * 200;
-        Vector3 upPos = Vector3.up * 200;
-        float slashSpeed = 0.1f;
+    private const float _slashDistance = 200f;
+    private const float _slashSpeed = 0.1f;
 
-        animationSeq.Append(transform.DOLocalMove(rightUpPos, slashSpeed).SetEase(Ease.Linear));
-        animationSeq.Append(transform.DOLocalMove(-rightUpPos, slashSpeed).SetEase(Ease.Linear));
-        animationSeq.Append(transform.DOLocalMove(leftUpPos, slashSpeed).SetEase(Ease.Linear));
-        animationSeq.Append(transform.DOLocalMove(-leftUpPos, slashSpeed).SetEase(Ease.Linear));
-        animationSeq.Append(transform.DOLocalMove(upPos, slashSpeed).SetEase(Ease.Linear));
-        animationSeq.Append(transform.DOLocalMove(-upPos, slashSpeed).SetEase(Ease.Linear));
+    public override void CardPlayAnimation(Sequence animationSeq, Transform transformToAnimate)
+    {
+        Vector3 leftUpPos = (Vector3.up + Vector3.left) * _slashDistance;
+        Vector3 rightUpPos = (Vector3.up + Vector3.right) * _slashDistance;
+        Vector3 upPos = Vector3.up * _slashDistance;
+
+        animationSeq.Append(transformToAnimate.DOLocalMove(rightUpPos, _slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transformToAnimate.DOLocalMove(-rightUpPos, _slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transformToAnimate.DOLocalMove(leftUpPos, _slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transformToAnimate.DOLocalMove(-leftUpPos, _slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transformToAnimate.DOLocalMove(upPos, _slashSpeed).SetEase(Ease.Linear));
+        animationSeq.Append(transformToAnimate.DOLocalMove(-upPos, _slashSpeed).SetEase(Ease.Linear));
     }
 }

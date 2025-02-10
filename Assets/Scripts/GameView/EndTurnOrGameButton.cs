@@ -7,7 +7,7 @@ public class EndTurnOrGameButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _buttonTMP;
     [SerializeField] private Button _button;
 
-    private readonly string _endGameText = "End\nGame";
+    private const string _endGameText = "End\nGame";
 
     private DeckPile DeckPile => GameView.Instance.DeckPile;
     private PlayersHand PlayersHand => GameView.Instance.PlayersHand;

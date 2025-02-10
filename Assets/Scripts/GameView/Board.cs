@@ -12,9 +12,8 @@ public class Board : MonoBehaviour, IDropHandler
     {
         if (_cardOnBoard != null) return;
 
-        if (eventData.pointerDrag != null && eventData.pointerDrag.GetComponent<Card>() != null)
+        if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out Card droppedCard))
         {
-            Card droppedCard = eventData.pointerDrag.GetComponent<Card>();
             PlayCard(droppedCard);
         }
     }
@@ -23,7 +22,7 @@ public class Board : MonoBehaviour, IDropHandler
     {
         //this is preventing card from being dragged
         //it also makes that OnEndDrag and OnPointerExit events is not called on the card
-        card.enabled = false;
+        card.SetCardEnabled(false);
 
         //these two lines fixes potential buggs caused by not calling OnEndDrag event on the card
         GameManager.Instance.SetCursorToBasic();
@@ -32,9 +31,9 @@ public class Board : MonoBehaviour, IDropHandler
         GameView.Instance.PlayersHand.RemoveCardFromHand(card);
 
         _cardOnBoard = card;
-        card.transform.SetParent(transform);
+        card.MoveTransform.SetParent(transform);
 
-        Tween moveCardToBoardTween = card.transform.DOLocalMove(Vector3.zero, 0.25f);
+        Tween moveCardToBoardTween = card.MoveTransform.DOLocalMove(Vector3.zero, 0.25f);
         moveCardToBoardTween.onComplete += card.PlayCard;
 
         card.OnPlayAnimationEnd += () => DiscardCard(card);
@@ -48,13 +47,13 @@ public class Board : MonoBehaviour, IDropHandler
         GameView.Instance.DiscardPile.SetCardParent(card);
 
         Sequence discardingSeq = DOTween.Sequence();
-        discardingSeq.Append(card.transform.DOScale(0f, 1f));
-        discardingSeq.Join(card.transform.DOMove(GameView.Instance.DiscardPile.transform.position, 1f));
+        discardingSeq.Append(card.MoveTransform.DOScale(0f, 1f));
+        discardingSeq.Join(card.MoveTransform.DOLocalMove(Vector3.zero, 1f));
 
         discardingSeq.onComplete += () =>
         {
             GameView.Instance.DiscardPile.AddOneToDisplayedNumer();
-            card.gameObject.SetActive(false);
+            card.SetCardGameObjectActive(false);
         };
     }
 }

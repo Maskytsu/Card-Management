@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class Deck
+public struct Deck
 {
     public string Name;
-    public List<Card> Cards;
+    public List<Card> CardPrefabs;
 }

@@ -9,7 +9,9 @@ public class BaseDeckScriptableEditor : Editor
 
         BaseDeckScriptable deckScriptable = (BaseDeckScriptable)target;
 
-        if (deckScriptable.Deck.Cards.Count != GameManager.DeckSize)
+        if (deckScriptable.BaseDeck.CardPrefabs == null) return;
+
+        if (deckScriptable.BaseDeck.CardPrefabs.Count != GameManager.DeckSize)
         {
             EditorGUILayout.Space();
             EditorGUILayout.HelpBox("Size of the deck is not valid. It should contain " 

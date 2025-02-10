@@ -8,13 +8,13 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour, 
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public static readonly string KillableMoveCardTweensID = "KillableMoveCardTween";
+    public const string KillableMoveCardTweensID = "KillableMoveCardTween";
 
     public event Action OnPlayAnimationEnd;
 
     public bool IsBeingDragged { get; private set; } = false;
-
-    [SerializeField] private RectTransform _cardRectTransform;
+    [field: SerializeField] public RectTransform MoveTransform { get; private set; }
+    [Space]
     [SerializeField] private CanvasGroup _cardCanvasGroup;
     [SerializeField] private Outline _cardOutline;
     [Space]
@@ -38,12 +38,12 @@ public class Card : MonoBehaviour,
         _cardCanvasGroup.blocksRaycasts = false;
 
         GameManager.Instance.SetCursorToHolding();
-        DOTween.Kill(transform, KillableMoveCardTweensID);
+        DOTween.Kill(MoveTransform, KillableMoveCardTweensID);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _cardRectTransform.anchoredPosition += eventData.delta / GameView.Instance.MainCanvas.scaleFactor;
+        MoveTransform.anchoredPosition += eventData.delta / GameView.Instance.MainCanvas.scaleFactor;
     }
 
     //it is called after OnDrop on Board object
@@ -53,7 +53,7 @@ public class Card : MonoBehaviour,
         _cardCanvasGroup.blocksRaycasts = true;
 
         GameManager.Instance.SetCursorToBasic();
-        transform.DOLocalMove(Vector3.zero, 1f).SetId(KillableMoveCardTweensID);
+        MoveTransform.DOLocalMove(Vector3.zero, 0.75f).SetId(KillableMoveCardTweensID).SetEase(Ease.InOutSine);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -64,6 +64,16 @@ public class Card : MonoBehaviour,
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!eventData.dragging) HighlightCard(1f, 0f);
+    }
+
+    public void SetCardEnabled(bool value)
+    {
+        enabled = value;
+    }
+
+    public void SetCardGameObjectActive(bool value)
+    {
+        gameObject.SetActive(value);
     }
 
     public void SetIsBeingDragged(bool value)
@@ -78,7 +88,7 @@ public class Card : MonoBehaviour,
         Sequence animationSeq = DOTween.Sequence();
         animationSeq.onComplete += () => OnPlayAnimationEnd?.Invoke();
 
-        _cardAnimation.CardPlayAnimation(animationSeq);
+        _cardAnimation.CardPlayAnimation(animationSeq, MoveTransform);
     }
 
     private void HighlightCard(float scale, float fade)
@@ -86,7 +96,7 @@ public class Card : MonoBehaviour,
         if (_highlightCardSeq.IsActive()) _highlightCardSeq.Kill();
 
         _highlightCardSeq = DOTween.Sequence();
-        _highlightCardSeq.Append(transform.DOScale(scale, 0.25f));
+        _highlightCardSeq.Append(MoveTransform.DOScale(scale, 0.25f));
         _highlightCardSeq.Join(_cardOutline.DOFade(fade, 0.15f));
     }
 }

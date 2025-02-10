@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ActivateCardAnimation : CardAnimation
 {
-    public override void CardPlayAnimation(Sequence animationSeq)
+    public override void CardPlayAnimation(Sequence animationSeq, Transform transformToAnimate)
     {
-        animationSeq.Append(transform.DORotate(new Vector3(0, 0, 360f), 0.75f, RotateMode.FastBeyond360));
+        animationSeq.Append(transformToAnimate.DORotate(new Vector3(0, 0, 360f), 0.75f, RotateMode.FastBeyond360));
     }
 }

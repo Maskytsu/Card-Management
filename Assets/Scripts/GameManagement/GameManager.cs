@@ -5,13 +5,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public static int DeckSize { get; private set; } = 25;
-    public static int HandSize { get; private set; } = 5;
+    public const int DeckSize = 25;
+    public const int HandSize = 5;
 
     public event Action OnTurnEnd;
     public event Action OnGameEnd;
 
-    public Deck ChoosenDeck { get; private set; }
+    public Deck? ChoosenDeck { get; private set; }
 
     [SerializeField] private Texture2D _basicCursorTex;
     [SerializeField] private Texture2D _holdingCursorTex;
@@ -58,13 +58,13 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Choosen deck is not assigned!");
         }
-        else if (ChoosenDeck.Cards.Count != DeckSize)
+        else if (ChoosenDeck.Value.CardPrefabs.Count != DeckSize)
         {
             Debug.LogError("Choosen deck size is invalid!");
         }
         else
         {
-            foreach(Card card in ChoosenDeck.Cards)
+            foreach(Card card in ChoosenDeck.Value.CardPrefabs)
             {
                 if (card == null)
                 {

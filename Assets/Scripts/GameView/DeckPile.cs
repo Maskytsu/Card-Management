@@ -10,10 +10,10 @@ public class DeckPile : MonoBehaviour
 {
     public event Action OnCardsSentToHand;
 
-    public int AmountOfCardsInPile => _cardsInPile.Count;
+    public int AmountOfCardsInPile => _cardPrefabsInPile.Count;
 
     //this contains card prefabs
-    [ReadOnly, SerializeField] private List<Card> _cardsInPile;
+    [ReadOnly, SerializeField] private List<Card> _cardPrefabsInPile;
 
     [SerializeField] private TextMeshProUGUI _countDisplayTMP;
 
@@ -32,16 +32,16 @@ public class DeckPile : MonoBehaviour
 
     private void SetupDeck()
     {
-        _cardsInPile = GameManager.Instance.ChoosenDeck.Cards.ToList();
+        _cardPrefabsInPile = GameManager.Instance.ChoosenDeck.Value.CardPrefabs.ToList();
 
         //shuffle deck with Fisher-Yates shuffle algorithm
-        for (int i = _cardsInPile.Count - 1; i > 0; i--)
+        for (int i = _cardPrefabsInPile.Count - 1; i > 0; i--)
         {
             int randomIndex = UnityEngine.Random.Range(0, i + 1);
-            (_cardsInPile[i], _cardsInPile[randomIndex]) = (_cardsInPile[randomIndex], _cardsInPile[i]);
+            (_cardPrefabsInPile[i], _cardPrefabsInPile[randomIndex]) = (_cardPrefabsInPile[randomIndex], _cardPrefabsInPile[i]);
         }
 
-        _countDisplayTMP.text = _cardsInPile.Count.ToString();
+        _countDisplayTMP.text = _cardPrefabsInPile.Count.ToString();
 
         Sequence shuffleAnimation = DOTween.Sequence();
         shuffleAnimation.Append(transform.DOShakePosition(1f, 50f));
@@ -52,25 +52,25 @@ public class DeckPile : MonoBehaviour
 
     private void SendCardsToHand()
     {
-        if (_cardsInPile.Count == 0) return;
+        if (_cardPrefabsInPile.Count == 0) return;
 
         List<Card> cardsToSend = new();
         int amountOfCardsToFillHand = GameManager.HandSize - GameView.Instance.PlayersHand.AmountOfCardsInHand;
 
         for (int i = 0; i < amountOfCardsToFillHand; i++)
         {
-            int lastIndexOfPile = _cardsInPile.Count - 1;
+            int lastIndexOfPile = _cardPrefabsInPile.Count - 1;
 
-            Card spawnedCard = Instantiate(_cardsInPile[lastIndexOfPile]);
+            Card spawnedCard = Instantiate(_cardPrefabsInPile[lastIndexOfPile]);
 
-            spawnedCard.enabled = false;
-            spawnedCard.transform.position = transform.position;
-            spawnedCard.transform.localScale = Vector3.zero;
+            spawnedCard.SetCardEnabled(false);
+            spawnedCard.MoveTransform.position = transform.position;
+            spawnedCard.MoveTransform.localScale = Vector3.zero;
 
             cardsToSend.Add(spawnedCard);
-            _cardsInPile.RemoveAt(lastIndexOfPile);
+            _cardPrefabsInPile.RemoveAt(lastIndexOfPile);
 
-            if (_cardsInPile.Count == 0) break;
+            if (_cardPrefabsInPile.Count == 0) break;
         }
 
         OnCardsSentToHand?.Invoke();

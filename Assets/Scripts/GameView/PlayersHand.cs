@@ -18,24 +18,23 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
     [SerializeField] private Transform _cardSlotsParent;
 
-    private readonly float _slotsOffsetY = -80f;
-    private readonly float _baseDistanceBetweenSlots = 150f;
-    private readonly int _amountOfSlotsToShrinkDistance = 7;
-    private readonly float _shrinkAmount = 8f;
-    private readonly float _minDistanceBetweenSlots = 20f;
+    private const float _slotsOffsetY = -80f;
+    private const float _baseDistanceBetweenSlots = 150f;
+    private const int _amountOfSlotsToShrinkDistance = 7;
+    private const float _shrinkAmount = 8f;
+    private const float _minDistanceBetweenSlots = 20f;
 
     private Vector3 _currentDistanceBetweenSlots;
 
     public void OnPointerMove(PointerEventData eventData)
     {
-        if (eventData.pointerDrag != null && eventData.pointerDrag.GetComponent<Card>() != null)
+        if (eventData.pointerDrag != null && eventData.pointerDrag.TryGetComponent(out Card draggedCard))
         {
-            Card draggedCard = eventData.pointerDrag.GetComponent<Card>();
             GetCardSlot(draggedCard, out CardSlot draggedCardSlot, out int? draggedCardSlotIndex);
 
             if (draggedCardSlot == null) return;
 
-            float cardPosX = draggedCard.transform.position.x;
+            float cardPosX = draggedCard.MoveTransform.position.x;
             float slotPosX = draggedCardSlot.CardSlotTransform.position.x;
             float cardToSlotDistanceX = cardPosX - slotPosX;
 
@@ -63,25 +62,25 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
     public IEnumerator DrawCards(List<Card> cards)
     {
-        GameView.Instance.EndTurnOrGameButton.SetInteractable(false);
-
         WaitForSeconds waitForSeconds = new(0.25f);
+                    float drawingDuration = 1f;
+
+        GameView.Instance.EndTurnOrGameButton.SetInteractable(false);
 
         GenerateCardSlots(AmountOfCardsInHand + cards.Count);
         MoveAllAssignedCardsToSlots();
 
         foreach (Card card in cards)
         {
-            DOTween.Kill(card.transform, Card.KillableMoveCardTweensID);
+            DOTween.Kill(card.MoveTransform, Card.KillableMoveCardTweensID);
 
             _cardsInHand.Add(card);
             _cardSlots[_cardsInHand.Count - 1].AssignCardToSlot(card);
 
-            float drawingDuration = 1f;
-            Tween scaleCardTween = card.transform.DOScale(1f, drawingDuration);
-            card.transform.DOLocalMove(Vector3.zero, drawingDuration).SetId(Card.KillableMoveCardTweensID);
+            Tween scaleCardTween = card.MoveTransform.DOScale(1f, drawingDuration);
+            card.MoveTransform.DOLocalMove(Vector3.zero, drawingDuration).SetId(Card.KillableMoveCardTweensID);
 
-            scaleCardTween.onComplete += () => { card.enabled = true; };
+            scaleCardTween.onComplete += () => card.SetCardEnabled(true);
 
             GameView.Instance.DeckPile.MinusOneFromDisplayedNumer();
 
@@ -187,10 +186,10 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
     private void MoveCardToLocalCenter(Card card)
     {
-        if (!card.IsBeingDragged && card.transform.localPosition != Vector3.zero)
+        if (!card.IsBeingDragged && card.MoveTransform.localPosition != Vector3.zero)
         {
-            DOTween.Kill(card.transform, Card.KillableMoveCardTweensID);
-            card.transform.DOLocalMove(Vector3.zero, 0.25f).SetId(Card.KillableMoveCardTweensID);
+            DOTween.Kill(card.MoveTransform, Card.KillableMoveCardTweensID);
+            card.MoveTransform.DOLocalMove(Vector3.zero, 0.25f).SetId(Card.KillableMoveCardTweensID);
         }
     }
 
@@ -227,7 +226,7 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
         public void AssignCardToSlot(Card card)
         {
             CardInSlot = card;
-            card.transform.SetParent(CardSlotTransform);
+            card.MoveTransform.SetParent(CardSlotTransform);
         }
     }
 }

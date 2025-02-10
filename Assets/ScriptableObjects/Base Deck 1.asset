@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858908b800003394e8d389f0cbb11beb, type: 3}
   m_Name: Base Deck 1
   m_EditorClassIdentifier: 
-  <Deck>k__BackingField:
+  <BaseDeck>k__BackingField:
     Name: Base Deck 1
-    Cards:
+    CardPrefabs:
     - {fileID: 2652258429644713131, guid: 0f89735fcd8c5c041ab9da88826c9177, type: 3}
     - {fileID: 2016668486037929779, guid: 6317e5769db192b469a67cb0d26c87f1, type: 3}
     - {fileID: 423329427510860194, guid: 3aba28fc575133e448a112c6ddeb3550, type: 3}

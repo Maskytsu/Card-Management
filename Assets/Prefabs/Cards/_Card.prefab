@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d320ff7e6784545858a161fe6373d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MoveTransform>k__BackingField: {fileID: 4293436687562723529}
   _cardRectTransform: {fileID: 4293436687562723529}
   _cardCanvasGroup: {fileID: 6429742237739656772}
   _cardOutline: {fileID: 4232310188821927412}
