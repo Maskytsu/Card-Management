@@ -63,6 +63,8 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
     public IEnumerator DrawCards(List<Card> cards)
     {
+        GameView.Instance.EndTurnOrGameButton.SetInteractable(false);
+
         WaitForSeconds waitForSeconds = new(0.25f);
 
         GenerateCardSlots(AmountOfCardsInHand + cards.Count);
@@ -70,14 +72,14 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
         foreach (Card card in cards)
         {
-            DOTween.Kill(card.transform, Card.MoveCardTweensID);
+            DOTween.Kill(card.transform, Card.KillableMoveCardTweensID);
 
             _cardsInHand.Add(card);
             _cardSlots[_cardsInHand.Count - 1].AssignCardToSlot(card);
 
             float drawingDuration = 1f;
             Tween scaleCardTween = card.transform.DOScale(1f, drawingDuration);
-            card.transform.DOLocalMove(Vector3.zero, drawingDuration).SetId(Card.MoveCardTweensID);
+            card.transform.DOLocalMove(Vector3.zero, drawingDuration).SetId(Card.KillableMoveCardTweensID);
 
             scaleCardTween.onComplete += () => { card.enabled = true; };
 
@@ -85,6 +87,8 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
 
             yield return waitForSeconds;
         }
+
+        GameView.Instance.EndTurnOrGameButton.SetInteractable(true);
     }
 
     private void GenerateCardSlots(int numberOfSlots)
@@ -185,8 +189,8 @@ public class PlayersHand : MonoBehaviour, IPointerMoveHandler
     {
         if (!card.IsBeingDragged && card.transform.localPosition != Vector3.zero)
         {
-            DOTween.Kill(card.transform, Card.MoveCardTweensID);
-            card.transform.DOLocalMove(Vector3.zero, 0.25f).SetId(Card.MoveCardTweensID);
+            DOTween.Kill(card.transform, Card.KillableMoveCardTweensID);
+            card.transform.DOLocalMove(Vector3.zero, 0.25f).SetId(Card.KillableMoveCardTweensID);
         }
     }
 

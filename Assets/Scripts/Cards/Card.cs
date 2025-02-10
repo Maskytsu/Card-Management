@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -9,7 +8,7 @@ using UnityEngine.UI;
 public abstract class Card : MonoBehaviour, 
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public static readonly string MoveCardTweensID = "MoveCardTween";
+    public static readonly string KillableMoveCardTweensID = "KillableMoveCardTween";
 
     public event Action OnPlayAnimationEnd;
 
@@ -44,7 +43,7 @@ public abstract class Card : MonoBehaviour,
         _cardCanvasGroup.blocksRaycasts = false;
 
         GameManager.Instance.SetCursorToHolding();
-        DOTween.Kill(transform, MoveCardTweensID);
+        DOTween.Kill(transform, KillableMoveCardTweensID);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -59,7 +58,7 @@ public abstract class Card : MonoBehaviour,
         _cardCanvasGroup.blocksRaycasts = true;
 
         GameManager.Instance.SetCursorToBasic();
-        transform.DOLocalMove(Vector3.zero, 1f).SetId(MoveCardTweensID);
+        transform.DOLocalMove(Vector3.zero, 1f).SetId(KillableMoveCardTweensID);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -79,6 +78,8 @@ public abstract class Card : MonoBehaviour,
 
     public void PlayCard()
     {
+        _cardOutline.DOColor(new Color(0, 1f, 1f, 1f), 0.15f);
+
         Sequence animationSeq = DOTween.Sequence();
         animationSeq.onComplete += () => OnPlayAnimationEnd?.Invoke();
 

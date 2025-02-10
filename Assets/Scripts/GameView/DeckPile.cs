@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class DeckPile : MonoBehaviour
 {
-    public event Action OnCardsSent;
+    public event Action OnCardsSentToHand;
 
     public int AmountOfCardsInPile => _cardsInPile.Count;
 
@@ -20,6 +20,7 @@ public class DeckPile : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnTurnEnd += SendCardsToHand;
+        GameView.Instance.EndTurnOrGameButton.SetInteractable(false);
 
         SetupDeck();
     }
@@ -72,7 +73,7 @@ public class DeckPile : MonoBehaviour
             if (_cardsInPile.Count == 0) break;
         }
 
-        OnCardsSent?.Invoke();
+        OnCardsSentToHand?.Invoke();
 
         StartCoroutine(GameView.Instance.PlayersHand.DrawCards(cardsToSend));
     }

@@ -1,9 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndTurnOrGameButton : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _buttonTMP;
+    [SerializeField] private Button _button;
 
     private readonly string _endGameText = "End\nGame";
 
@@ -12,17 +14,22 @@ public class EndTurnOrGameButton : MonoBehaviour
 
     private void Start()
     {
-        DeckPile.OnCardsSent += SwapNameIfLastTurn;
+        DeckPile.OnCardsSentToHand += SwapNameIfLastTurn;
     }
 
-    private void SwapNameIfLastTurn()
+    public void SetInteractable(bool value)
     {
-        if (DeckPile.AmountOfCardsInPile == 0) _buttonTMP.text = _endGameText;
+        _button.interactable = value;
     }
 
     public void EndTurnOrGame()
     {
         if (DeckPile.AmountOfCardsInPile == 0) GameManager.Instance.EndGame();
-        else if(PlayersHand.AmountOfCardsInHand < GameManager.HandSize) GameManager.Instance.EndTurn();
+        else if (PlayersHand.AmountOfCardsInHand < GameManager.HandSize) GameManager.Instance.EndTurn();
+    }
+
+    private void SwapNameIfLastTurn()
+    {
+        if (DeckPile.AmountOfCardsInPile == 0) _buttonTMP.text = _endGameText;
     }
 }
