@@ -1,9 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class SubZeroCard : Card
+public class SubZeroCardAnimation : CardAnimation
 {
-    protected override void CardPlayAnimation(Sequence animationSeq)
+    public override void CardPlayAnimation(Sequence animationSeq)
     {
         Vector3 cardBaseScale = transform.localScale;
 

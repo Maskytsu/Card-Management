@@ -92,6 +92,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5805608229360274230, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
+      propertyPath: _cardAnimation
+      value: 
+      objectReference: {fileID: 5147516452961348066}
     - target: {fileID: 5998776936527373117, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -113,7 +117,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6751228773880361957, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
-      insertIndex: 1
+      insertIndex: -1
       addedObject: {fileID: 5147516452961348066}
   m_SourcePrefab: {fileID: 100100000, guid: bcd453f61822ba04ab7577d001ed6e99, type: 3}
 --- !u!1 &648361112644051313 stripped

@@ -1,9 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class HardSkinCard : Card
+public class HardSkinCardAnimation : CardAnimation
 {
-    protected override void CardPlayAnimation(Sequence animationSeq)
+    public override void CardPlayAnimation(Sequence animationSeq)
     {
         Vector3 cardBaseScale = transform.localScale;
 

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public abstract class Card : MonoBehaviour, 
+public class Card : MonoBehaviour, 
     IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public static readonly string KillableMoveCardTweensID = "KillableMoveCardTween";
@@ -14,18 +14,13 @@ public abstract class Card : MonoBehaviour,
 
     public bool IsBeingDragged { get; private set; } = false;
 
-    private RectTransform _cardRectTransform;
-    private CanvasGroup _cardCanvasGroup;
-    private Outline _cardOutline;
+    [SerializeField] private RectTransform _cardRectTransform;
+    [SerializeField] private CanvasGroup _cardCanvasGroup;
+    [SerializeField] private Outline _cardOutline;
+    [Space]
+    [SerializeField] private CardAnimation _cardAnimation;
 
     private Sequence _highlightCardSeq;
-
-    private void Awake()
-    {
-        _cardRectTransform = GetComponent<RectTransform>();
-        _cardCanvasGroup = GetComponent<CanvasGroup>();
-        _cardOutline = transform.GetComponentInChildren<Outline>();
-    }
 
     private void OnEnable()
     {
@@ -83,13 +78,8 @@ public abstract class Card : MonoBehaviour,
         Sequence animationSeq = DOTween.Sequence();
         animationSeq.onComplete += () => OnPlayAnimationEnd?.Invoke();
 
-        CardPlayAnimation(animationSeq);
+        _cardAnimation.CardPlayAnimation(animationSeq);
     }
-
-    /// <summary>
-    /// Animation should be created as part of given Sequence <paramref name="animationSeq"/>.
-    /// </summary>
-    protected abstract void CardPlayAnimation(Sequence animationSeq);
 
     private void HighlightCard(float scale, float fade)
     {
